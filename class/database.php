@@ -1,5 +1,4 @@
 <?php
-
 class Crud {
 	public $isConn;
 	public $datab;
@@ -8,10 +7,11 @@ class Crud {
 	public $span2;
 
 	//connect to DB
-	public function __construct($username = "root", $password = "root", $host = "localhost", $dbname = "gdi", $options = array()) {
+	public function __construct($username = "root", $password = "root", $host = "localhost", $dbname = "pdolte", $options = array()) {
 		$this->isConn = TRUE;
 		try {
 			$this->datab = new PDO("mysql:host={$host};dbname={$dbname};charset=utf8", $username, $password, $options);
+
 			$this->datab->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 			$this->datab->setAttribute(PDO::ATTR_DEFAULT_FETCH_MODE, PDO::FETCH_OBJ);
 			$this->datab->setAttribute(PDO::ATTR_EMULATE_PREPARES, false);
@@ -29,7 +29,7 @@ class Crud {
 
 	}
 
-	public function select($tblName, $params = array(), $fetchType = PDO::FETCH_OBJ) {
+	public function select($tblName, $fetchType = PDO::FETCH_OBJ) {
 		$query = "SELECT * FROM ".$tblName."";
 
 		if ($fetchType == "assoc") {
@@ -38,7 +38,7 @@ class Crud {
 
 		try {
 			$stmt = $this->datab->prepare($query);
-			$stmt->execute($params);
+			$stmt->execute();
 			return $stmt->fetchAll($fetchType);
 		} catch (PDOException $e) {
 			throw new Exception($e->getMessage());
@@ -65,6 +65,7 @@ class Crud {
 			$stmt = $this->datab->prepare($query);
 			$stmt->execute($params);
 			return $stmt->fetch($fetchType);
+			// return $query;
 		} catch (PDOException $e) {
 			throw new Exception($e->getMessage());
 		}
@@ -241,4 +242,5 @@ class Crud {
 			return false;
 		}
 	}
+
 }

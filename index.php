@@ -1,23 +1,43 @@
 <?php
-require ('class/database.php');
-$db = new Crud;
+session_start();
+require_once ('class/database.php');
+require_once ('class/myconfig.php');
+require_once ('class/functionlist.php');
+$db       = new Crud();
+$myConfig = new Config();
+
 ?>
 <!DOCTYPE html>
 <html>
 <head>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <title>Griya Dayun Indah</title>
-  <!-- Tell the browser to be responsive to screen width -->
-  <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
-  <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.min.css">
-  <!-- Font Awesome -->
-  <link rel="stylesheet" href="bower_components/font-awesome/css/font-awesome.min.css">
-  <!-- Ionicons -->
-  <link rel="stylesheet" href="bower_components/Ionicons/css/ionicons.min.css">
-  <!-- Theme style -->
-  <link rel="stylesheet" href="dist/css/AdminLTE.min.css">
-  <link rel="stylesheet" href="dist/css/skins/skin-blue.min.css">
+  <title><?php echo $myConfig->siteConfig("site_title");?></title>
+    <!-- Tell the browser to be responsive to screen width -->
+    <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+    <!-- Bootstrap 3.3.7 -->
+    <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.min.css">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="bower_components/font-awesome/css/font-awesome.min.css">
+    <!-- Ionicons -->
+    <link rel="stylesheet" href="bower_components/Ionicons/css/ionicons.min.css">
+    <!-- Theme style -->
+    <link rel="stylesheet" href="dist/css/AdminLTE.min.css">
+    <!-- AdminLTE Skins. Choose a skin from the css/skins
+    folder instead of downloading all of them to reduce the load. -->
+    <link rel="stylesheet" href="dist/css/skins/_all-skins.min.css">
+    <!-- Morris chart -->
+    <link rel="stylesheet" href="bower_components/morris.js/morris.css">
+    <!-- jvectormap -->
+    <link rel="stylesheet" href="bower_components/jvectormap/jquery-jvectormap.css">
+    <!-- Date Picker -->
+    <link rel="stylesheet" href="bower_components/bootstrap-datepicker/dist/css/bootstrap-datepicker.min.css">
+    <!-- Daterange picker -->
+    <link rel="stylesheet" href="bower_components/bootstrap-daterangepicker/daterangepicker.css">
+    <!-- bootstrap wysihtml5 - text editor -->
+    <link rel="stylesheet" href="plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.min.css">
+    <!-- DataTables -->
+    <link rel="stylesheet" href="bower_components/datatables.net-bs/css/dataTables.bootstrap.min.css">
   <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
   <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
     <!--[if lt IE 9]>
@@ -28,6 +48,13 @@ $db = new Crud;
   <link rel="stylesheet"
   href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700,300italic,400italic,600italic">
 </head>
+
+<?php
+// if (!isset($_SESSION['username'])) {
+// 	require "login.php";
+// 	exit;
+// }
+?>
 <body class="hold-transition skin-blue fixed sidebar-mini">
   <div class="wrapper">
     <!-- Main Header -->
@@ -35,9 +62,9 @@ $db = new Crud;
       <!-- Logo -->
       <a href="index.php" class="logo">
         <!-- mini logo for sidebar mini 50x50 pixels -->
-        <span class="logo-mini"><b></b>GDI</span>
+        <span class="logo-mini"><?=$myConfig->siteConfig('logo_mini')?></span>
         <!-- logo for regular state and mobile devices -->
-        <span class="logo-lg"><b>Griya Dayun Indah</b></span>
+        <span class="logo-lg"><?=$myConfig->siteConfig('logo_lg')?></span>
       </a>
       <!-- Header Navbar -->
       <nav class="navbar navbar-static-top" role="navigation">
@@ -108,19 +135,12 @@ if (empty($_GET['page'])) {
 $content = $db->isiContent(array($_GET['page']));
 echo $content;
 ?>
-
-
-          <!-- /.content -->
+<!-- /.content -->
         </div>
         <!-- /.content-wrapper -->
         <!-- Main Footer -->
         <footer class="main-footer">
-          <!-- To the right -->
-          <div class="pull-right hidden-xs">
-            <i>Make with <i class="fa fa-heart"></i></i>
-          </div>
-          <!-- Default to the left -->
-          <strong>Copyright Sifr Studio &copy; 2018 <a href="#">Company</a>.</strong> All rights reserved.
+<?=$myConfig->siteConfig('footer')?>
         </footer>
         <!-- Control Sidebar -->
         <aside class="control-sidebar control-sidebar-dark">
@@ -193,15 +213,33 @@ echo $content;
           <div class="control-sidebar-bg"></div>
         </div>
         <!-- ./wrapper -->
+
+
         <!-- REQUIRED JS SCRIPTS -->
+          <script>
+  $(document).ready(function(){
+    $('#tblusers').DataTable({
+      'paging'      : true,
+      'lengthChange': false,
+      'searching'   : false,
+      'ordering'    : true,
+      'info'        : true,
+      'autoWidth'   : true
+    })
+  });
+  </script>
         <!-- jQuery 3 -->
         <script src="bower_components/jquery/dist/jquery.min.js"></script>
         <!-- Bootstrap 3.3.7 -->
         <script src="bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
         <!-- AdminLTE App -->
         <script src="dist/js/adminlte.min.js"></script>
+          <!-- DataTables -->
+        <script src="bower_components/datatables.net/js/jquery.dataTables.min.js"></script>
+        <script src="bower_components/datatables.net-bs/js/dataTables.bootstrap.min.js"></script>
       <!-- Optionally, you can add Slimscroll and FastClick plugins.
       Both of these plugins are recommended to enhance the
       user experience. -->
+
     </body>
     </html>
