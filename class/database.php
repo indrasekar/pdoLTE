@@ -7,7 +7,7 @@ class Crud {
 	public $span2;
 
 	//connect to DB
-	public function __construct($username = "root", $password = "root", $host = "localhost", $dbname = "pdolte", $options = array()) {
+	public function __construct($username = "root", $password = "", $host = "localhost", $dbname = "pdolte", $options = array()) {
 		$this->isConn = TRUE;
 		try {
 			$this->datab = new PDO("mysql:host={$host};dbname={$dbname};charset=utf8", $username, $password, $options);
@@ -143,7 +143,7 @@ class Crud {
 	}
 
 	public function isiContent($category = array()) {
-		$query = "SELECT * FROM menu WHERE url= ? ";
+		$query = "SELECT * FROM nav_menu WHERE url= ? ";
 
 		try {
 			$stmt = $this->datab->prepare($query);
@@ -168,7 +168,7 @@ class Crud {
 
 	function dataMenu($params = array('ACTIVE', 'possition')) {
 		$data  = array();
-		$query = "SELECT * FROM menu WHERE active = ? ORDER BY ? ASC";
+		$query = "SELECT * FROM nav_menu WHERE active = ? ORDER BY ? ASC";
 		$stmt  = $this->datab->prepare($query);
 		$stmt->execute($params);
 		$rsMn = $stmt->fetchAll();

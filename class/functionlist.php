@@ -1,19 +1,12 @@
 <?php
-
-function sex($type) {
-	if ($type == "l") {
-		$sex = "Laki-laki";
-	} elseif ($type == "p") {
-		$sex = "Perempuan";
+require_once "database.php";
+class FunctionList extends Crud{
+	function sex($alias) {
+		$sex = $this->selectWhere("sex","m_sex",array('alias'=>$alias));
+		return $sex->sex;
 	}
-	return $sex;
-}
-
-function active($type) {
-	if ($type == "1") {
-		$status = "Active";
-	} elseif ($type == "0") {
-		$status = "Inactive";
+	function active($alias) {
+		$status = $this->selectWhere("status","m_active_status",array('alias'=>$alias));
+		return $status->status;
 	}
-	return $status;
 }
